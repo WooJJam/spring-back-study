@@ -59,10 +59,21 @@ public class CookieController {
         Cookie[] cookies = request.getCookies();
         String key = data.get("key");
         String value = data.get("value");
-
         Cookie cookie = new Cookie(key, value);
         response.addCookie(cookie);
         return "Modify Complete!";
+    }
+
+    @ResponseBody
+    @PostMapping("/get-value")
+    /*
+     @CookieValue 를 이용하여 cookie value 값을 얻을 수 있음.
+     name 에는 해당 cookie의 key 값이 들어가야함.
+      */
+    public String test(@CookieValue(name = "user") String user,
+                       HttpServletRequest request,
+                       HttpServletResponse response) {
+        return user;
     }
 
     @ResponseBody
