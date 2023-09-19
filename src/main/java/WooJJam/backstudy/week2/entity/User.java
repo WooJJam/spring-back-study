@@ -19,10 +19,10 @@ public class User {
     private Long id;
 
     @Column
-    private String Email;
+    private String email;
 
     @Column
-    private String Password;
+    private String password;
 
     @CreationTimestamp // 시간 자동입력
     @Column(name="created_at")

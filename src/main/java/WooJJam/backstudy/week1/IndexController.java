@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/v1")
+@RequestMapping("/week1/v1")
 public class IndexController {
 
     private final Map<String, Object> json = new HashMap<>();

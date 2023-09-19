@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
-@RequestMapping("/v1/cookie")
+@RequestMapping("/week1/v1/cookie")
 @Controller
 public class CookieController {
     @ResponseBody
