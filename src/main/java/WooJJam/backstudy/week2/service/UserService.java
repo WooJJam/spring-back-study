@@ -1,17 +1,14 @@
-package WooJJam.backstudy.week2.Service;
+package WooJJam.backstudy.week2.service;
 
-import WooJJam.backstudy.week2.Repository.UserRepository;
+import WooJJam.backstudy.repository.UserRepository;
 import WooJJam.backstudy.week2.entity.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class UserService {
+
     private final UserRepository userRepository;
 
-    @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -25,11 +22,8 @@ public class UserService {
         }
     }
     public Boolean findByEmailIsEquals(String email) {
-        if (this.userRepository.findByEmail(email) != null && this.userRepository.findByEmail(email).equals(email)) {
-            return true;
-        }else{
-            return false;
-        }
+        return this.userRepository.findByEmail(email) != null
+                && this.userRepository.findByEmail(email).getEmail().equals(email);
     }
 
     public User save(User user) {

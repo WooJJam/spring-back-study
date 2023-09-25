@@ -1,8 +1,7 @@
 package WooJJam.backstudy.week2.controller;
 
-import WooJJam.backstudy.week2.Service.SessionService;
-import WooJJam.backstudy.week2.Service.UserService;
-import jakarta.servlet.http.Cookie;
+import WooJJam.backstudy.week2.service.SessionService;
+import WooJJam.backstudy.week2.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -10,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 @RestController
 //@RequiredArgsConstructor
