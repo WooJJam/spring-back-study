@@ -36,6 +36,7 @@ public class AuthenticationConfig {
                                 .requestMatchers("/spring-security/v1/users/login").permitAll() //login은 항상 허용
                                 .requestMatchers("/week2/v1/login").permitAll() //login은 항상 허용
                                 .requestMatchers("/spring-security/v1/users/reissue").permitAll() //reissue는 항상 허용
+                                .requestMatchers("/api/auth/**").permitAll()
                                 .requestMatchers("/spring-security/v1/**").authenticated() // review는 여전히 인증 필요
                                 .requestMatchers("/week2/v1/**").authenticated() // permitAll을 제외한 모든 url은 권한부여
                         )
