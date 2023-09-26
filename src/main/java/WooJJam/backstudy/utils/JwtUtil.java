@@ -1,11 +1,7 @@
 package WooJJam.backstudy.utils;
 
-import WooJJam.backstudy.repository.UserRepository;
 import io.jsonwebtoken.*;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,9 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -27,7 +21,6 @@ public class JwtUtil {
     public static String createAccessToken(String email, String secretKey, long expiredMs) {
         Claims claims = Jwts.claims().setSubject("AccessToekn"); // JWT payload 에 저장되는 정보단위
         claims.put("email", email); // 정보는 key / value 쌍으로 저장된다.
-//        claims.put("UUID", UUID.randomUUID().toString());
         return Jwts.builder()
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE) // 헤더의 타입 지정
                 .setClaims(claims)
@@ -51,8 +44,6 @@ public class JwtUtil {
     }
 
     public static boolean validateToken(String token, String secretKey) {
-        System.out.println("parseClaims(token, secretKey) = " + parseClaims(token, secretKey));
-        System.out.println("parseClaims(token, secretKey).getExpiration() = " + parseClaims(token, secretKey).getExpiration());
         try {
             Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             return true;
@@ -69,10 +60,8 @@ public class JwtUtil {
     }
 
     public static String getUserInfo(String token, String secretKey) {
-        return Jwts.parser()
-                .setSigningKey(secretKey)
-                .parseClaimsJws(token)
-                .getBody().get("email", String.class);
+        return parseClaims(token,secretKey).
+                get("email", String.class);
     }
 
 

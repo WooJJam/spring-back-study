@@ -11,8 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
-
 @Service
 public class SpringSecurityUserService {
 
@@ -26,8 +24,8 @@ public class SpringSecurityUserService {
     @Value("${jwt.secret}")
     private String secretKey;
 
-    private long accessExpiredMs = 1000*60*60; // 1시간
-    private long refreshExpiredMs = 1000*60*60*24*7L; // 일주일
+    private long accessExpiredMs = 1000 * 60 * 60; // 1시간
+    private long refreshExpiredMs = 1000 * 60 * 60 * 24 * 7L; // 일주일
 
 
     public ResponseEntity<String> login(UserDto userDto) {
@@ -38,7 +36,7 @@ public class SpringSecurityUserService {
         String password = userDto.getPassword();
 
         User userInfo = this.userRepository.findByEmail(email);
-        if(userInfo != null
+        if (userInfo != null
                 && userInfo.getEmail().equals(email)
                 && userInfo.getPassword().equals(password)) {
             tokenDto.setAccessToken(JwtUtil.createAccessToken(email, secretKey, accessExpiredMs));
@@ -46,9 +44,9 @@ public class SpringSecurityUserService {
 
             userRepository.updateRefreshToken(email, tokenDto.getRefreshToken());
 
-            return new ResponseEntity<String>("AccessToken = "+ tokenDto.getAccessToken()+"\n RefreshToken = "+tokenDto.getRefreshToken(),HttpStatus.CREATED);
-        }else {
-            return new ResponseEntity<String>("Login Failed!",HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<String>("AccessToken = " + tokenDto.getAccessToken() + "\n RefreshToken = " + tokenDto.getRefreshToken(), HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<String>("Login Failed!", HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -61,23 +59,20 @@ public class SpringSecurityUserService {
         String email = JwtUtil.getUserInfo(refreshToken, secretKey);
         TokenDto tokenDto = new TokenDto();
 
-        if(JwtUtil.validateToken(refreshToken, secretKey)) {
+        if (JwtUtil.validateToken(refreshToken, secretKey)) {
             String token = userRepository.findByEmail(email).getRefreshToken();
-            if(refreshToken.equals(token)) {
+            if (refreshToken.equals(token)) {
                 tokenDto.setAccessToken(JwtUtil.createAccessToken(email, secretKey, accessExpiredMs));
+                System.out.println("tokenDto = " + tokenDto);
+                return new ResponseEntity<String>("accessToken: " + tokenDto.getAccessToken(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<String>("Refresh Token이 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
             }
-            return new ResponseEntity<String>("accessToken: "+tokenDto.getAccessToken(), HttpStatus.OK);
-        }else {
+        } else {
             tokenDto.setAccessToken(JwtUtil.createAccessToken(email, secretKey, accessExpiredMs));
             tokenDto.setRefreshToken(JwtUtil.createRefreshToken(email, secretKey, refreshExpiredMs));
             userRepository.updateRefreshToken(email, tokenDto.getRefreshToken());
-
-            return  new ResponseEntity<String>("accessToken: "+tokenDto.getAccessToken()+"\n Refresh Token: "+tokenDto.getRefreshToken(), HttpStatus.OK);
+            return new ResponseEntity<String>("accessToken: " + tokenDto.getAccessToken() + "\n Refresh Token: " + tokenDto.getRefreshToken(), HttpStatus.OK);
         }
-
     }
-
-//    public String refresh(String token) {
-//
-//    }
 }

@@ -2,15 +2,9 @@ package WooJJam.backstudy.springSecurity.controller;
 
 import WooJJam.backstudy.dtos.UserDto;
 import WooJJam.backstudy.springSecurity.service.SpringSecurityUserService;
-import WooJJam.backstudy.utils.JwtUtil;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwt;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping("/spring-security/v1/users")
@@ -27,6 +21,7 @@ public class SpringSecurityUserController {
 
     @PostMapping("/reissue")
     public ResponseEntity<String> refresh(@RequestHeader("RefreshToken") String refreshToken) {
+        System.out.println("refreshToken = " + refreshToken);
         return springSecurityUserService.refresh(refreshToken);
     }
 
