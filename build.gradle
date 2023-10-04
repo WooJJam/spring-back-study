@@ -55,10 +55,13 @@ dependencies {
 	// Thymeleaf
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
-
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 
+	// json-simple 추가
+	implementation group: 'com.googlecode.json-simple', name:'json-simple', version:'1.1.1'
 
+	// Gson 추가
+	implementation 'com.google.code.gson:gson:2.8.6'
 }
 
 tasks.named('test') {

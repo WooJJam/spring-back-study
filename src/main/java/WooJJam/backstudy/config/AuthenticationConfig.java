@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -25,6 +27,9 @@ public class AuthenticationConfig {
 
     @Value("${jwt.secret}")
     private String secretKey;
+
+
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
@@ -37,6 +42,7 @@ public class AuthenticationConfig {
                                 .requestMatchers("/week2/v1/login").permitAll() //login은 항상 허용
                                 .requestMatchers("/spring-security/v1/users/reissue").permitAll() //reissue는 항상 허용
                                 .requestMatchers("/api/auth/**").permitAll()
+//                                .requestMatchers(HttpMethod.OPTIONS,"/**/*").permitAll()
                                 .requestMatchers("/spring-security/v1/**").authenticated() // review는 여전히 인증 필요
                                 .requestMatchers("/week2/v1/**").authenticated() // permitAll을 제외한 모든 url은 권한부여
                         )
